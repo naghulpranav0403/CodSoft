@@ -1,0 +1,89 @@
+
+  #include <iostream>
+#include <iomanip>
+#include <vector>
+
+using namespace std;
+
+const int NUM_ROWS = 5;
+const int NUM_COLS = 10;
+
+
+void displaySeats(const vector<vector<char>> &seats) {
+    cout << "Seating Arrangement:\n\n";
+    cout << "   ";
+    for (int col = 0; col < NUM_COLS; ++col) {
+        cout << setw(3) << col + 1;
+    }
+    cout << "\n";
+
+    for (int row = 0; row < NUM_ROWS; ++row) {
+        cout << setw(2) << row + 1 << " ";
+        for (int col = 0; col < NUM_COLS; ++col) {
+            cout << setw(3) << seats[row][col];
+        }
+        cout << "\n";
+    }
+}
+
+
+bool isSeatAvailable(const vector<vector<char>> &seats, int row, int col) {
+    return seats[row - 1][col - 1] == 'O';
+}
+
+
+void makeBooking(vector<vector<char>> &seats, int row, int col) {
+    seats[row - 1][col - 1] = 'X';
+}
+
+int main() {
+   
+    vector<vector<char>> seats(NUM_ROWS, vector<char>(NUM_COLS, 'O'));
+
+    int choice;
+    do {
+        cout << "\nMovie Ticket Booking System\n";
+        cout << "1. View Movie Listings\n";
+        cout << "2. View Seating Arrangement\n";
+        cout << "3. Make Booking\n";
+        cout << "4. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "\nMovie Listings:\n";
+                
+                break;
+            case 2:
+                displaySeats(seats);
+                break;
+            case 3:
+                int row, col;
+                cout << "Enter the row number (1-" << NUM_ROWS << "): ";
+                cin >> row;
+                cout << "Enter the column number (1-" << NUM_COLS << "): ";
+                cin >> col;
+
+        
+                if (row >= 1 && row <= NUM_ROWS && col >= 1 && col <= NUM_COLS) {
+                    if (isSeatAvailable(seats, row, col)) {
+                        makeBooking(seats, row, col);
+                        cout << "Booking successful! Seat at Row " << row << ", Column " << col << " has been reserved.\n";
+                    } else {
+                        cout << "Sorry, the seat is already taken. Please choose another seat.\n";
+                    }
+                } else {
+                    cout << "Invalid row or column number. Please try again.\n";
+                }
+                break;
+            case 4:
+                cout << "Exiting the program. Thank you!\n";
+                break;
+            default:
+                cout << "Invalid choice. Please enter a valid option.\n";
+        }
+    } while (choice != 4);
+
+    return 0;
+}
